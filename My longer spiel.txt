@@ -1,0 +1,59 @@
+Hi there!
+
+I've considered for years if I would ever share what I've made.  At first, this process of creating audiobooks was an extremely manual process making use of a chain of programs each doing their part, with me and a lot of Regex greasing the wheels between them.
+
+Over time, I've boiled the process down into a program that does 95% of the heavy lifting, and does it all itself.  I won't bore you with the story of how I got here, and why I have finally decided to give my work over to all of you - just understand it wasn't an easy decision.  In the end, I decided that this program would be a net positive on the world, and that it will bring you happiness.  I hope that will be so.  I just ask one thing.  Do not use this for evil.  I can't make you.  But I hope you will use this for yourself only.
+
+So, without further ado, let me talk to you about how this will work.  This isn't a program you can just download and double click and it just works.  It's a multi step process.  Maybe there's a way to make it better, but I don't know how.
+
+Contained in the archive below in the description is a step by step guide on how to get started.
+
+Basically, though, it's like this.  Oh I should mention this has only been tested on windows.  No idea how it will work on anything else - sorry!
+
+Download and install miniconda.  Create a new environment using Python 3 point 9.
+
+Up next is the really hard part.  You're going to need to download the source code for Coqui TTS and install it inside that virtual environment.  It should work, but there's always something wonky that goes wrong.  Next, you're going to need to install Pytorch.  If you want to make use of your graphics card to severely cut down the time of audio generation, make sure you get this step right.  When you run my program, it will say if it's using CPU or CUDA.  If you're sure your graphics card supports CUDA, and you're getting CPU, double check you installed the right pytorch.
+
+Later, when you run the program, it will ask you to agree to a license to use the End-To-End Audio model of XTTS v2.  Accept, and it will download.
+
+Now, if you managed to get that far, congratulations!  You have done the hardest part.  Note, while you can use PIP Install to use coquitts, it is too early a version to use the model we are using, which is why I said to download the source code, to use the latest version.
+
+So.  How to use my program.  It's very simple, and has two main functions.  First, it takes html documents of stories, and converts them into a text format that will then be used to make the audio.  As for how to get your documents into html first, I suggest something like pandoc command line tool.  Fair warning, PDFs will almost never work how you want them to.
+
+You would go into the miniconda environment and type something like
+
+python MYAITTSMaker.py "path_to_story.html" "path_to_output_text.txt"
+
+It will then spit out some text talking about issues it has with formatting, before and after.  Then, it will also spill out a document filled with unknown words, based on hunspell dictionaries.  You'll notice the output is in several chunks.  These chunks are devided into how often they appear, with the most often apprearing in in the first chunk.  I recommend pasting those first two chunks into a text file, and listening to how the voice pronounces them.  Like so.
+
+python MYAITTSMaker.py "path_to_text.txt"
+
+After that it will start processing.  If you see your folder filling up with hundred of audio files, it's working.  Just let it work.  DO NOT start this up in a folder where something like one drive will try to synch your files, you'll hate yourself later.
+
+Listen to the words, and figure out which ones sound bad.
+
+if you open up the text file replacements.txt, you'll see a bunch of word pairs.  text on the right is replaced with text on the left upon audio generation.
+
+Additionally, if you're tired of certain words appearing in the unknown words, just put them in ignore.txt
+
+So, now, last step.  Go into the text that was generated earlier (in this case "path_to_output_text.txt" ) and edit it.  Get rid of things you don't want to hear, like a table of contents, authors notes, etc etc.
+
+There are a few tags that the audiobook generator pays attention to I've outlined in the instructions.  But biggest thing you might will want to know is that any time you want one file to end and another to begin to make sure the chapter end tag is there.
+
+Exactly like it appears in the instructions, all caps.  Since I made this mostly as a fanfiction conversion tool, it might automatically be done for you for fics downloaded from Fimfiction.net, fichub, or archive of our own.  Either way, double check!
+
+There's one last feature.  You can skip up to a certain chapter for generation to begin.
+
+python MYAITTSMaker.py "path_to_text.txt" 7
+
+That will start the generation at chapter 7.
+
+However, my best advice to you is that you take the first chapter, slap it into a different text file, and generate that first.  Listen to it, see what it sounds like, and then tweak the document or word replacements before you just try for the whole thing.  It will save you a lot of headache.
+
+Well.  Thats' it.
+
+Will I stop making these audiobooks for youtube?  No.  I just don't know when I will get the bug.  But now, you don't need me.  You have you.
+
+I included a selection of great voices to use, but you can change your own.  A well formatted 6 seconds of any voice will do wonders.  (Just don't expect it to sound like those really crazy high quality models out there).
+
+Happy listening!
