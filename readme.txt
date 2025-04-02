@@ -1,5 +1,13 @@
 By using this software you agree to the terms in license.txt.
 
+VERSION 2!
+
+New features: 
+	+ No longer creates thousands of files!  No longer needs FFMPEG!  Works entirely in Memory!
+	+ Slightly better at not hallucinating at the end of sentences!  Still messes up for like single word prompts though sometimes.
+	+ Automatically prevents prompts that are too long that fizzle out!
+
+
 How to use
 
 1)  Install miniconda, and run it
@@ -24,9 +32,17 @@ pip install spylls
 
 pip install chardet
 
-5) Put FFMPEG and SOX in the directory.
+pip install sox
 
-6)  App Usage:  (make sure you open up miniconda, activate the coquitts environnt, and naviate to the directory of this program.)
+5) Download Sox from their releases:  https://sourceforge.net/projects/sox/files/sox/
+
+And put it in the same directory as AITTSMaker.py
+
+Also find a copy of libmp3lame.dll and put it in there too.
+
+And you're done!  Install complete!
+
+6)  App Usage:  (make sure you open up miniconda, activate the coquitts environment, and navigate to the directory of this program.)
 
 a)  format a story from html to text
 
@@ -36,7 +52,7 @@ this will get you the text file plus a set of words it doesn't know.  listen to 
 
 b)  python AITTSMaker.py "C:\AITTSMaker\Examples\The Wonderful Wizard of Oz.txt"
 
-this will start the audiobook process, making tons and tons of small files, rolling them up, and moving on to the next chapter
+this will start the audiobook process!  This new version doesn't create thousands of files and delete them, working entirely in memory.  You should see it working as it processes each line of the story in the prompt.
 
 TIPS N TRICKS
 
@@ -53,5 +69,5 @@ My best advice to you is that you take the first chapter, slap it into a differe
 OH NO IT DID A BAD
 
 1)  Unrecognised characters - sometimes it freaks out with accented characters.  replace them with regular characters.
-2)  Why is my whole chapter sounding  incredibly slow?  Short answer, because the first generated audio bit was silence.  Probably a few carriage returns or something before the actual text starts.  Make sure text is litrerally the first part of the file.
+2)  Why is my whole chapter sounding  incredibly slow?  Short answer, because the first generated audio bit was silence.  Probably a few carriage returns or something before the actual text starts.  Make sure text is literally the first part of the file.
 3)  It sometimes freaks out at the end of a sentence!?  Yeah, not sure why it does that.  Work in progress.  (You should have seen what happened when a sentence began with a comma, and there was a 2nd comma later - was absolutely wild)
