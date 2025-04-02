@@ -1,12 +1,14 @@
+##TODO: fix emphasis replace - it only puts in the ZXCV VCXZ, and aren't picked up for emphasis
 ##Written by Aaron Arendt
-                                                                      ##AITTSMaker © 2024 by Aaron Arendt is licensed under CC BY-NC-SA 4.0 
+
+##AITTSMaker © 2024 by Aaron Arendt is licensed under CC BY-NC-SA 4.0 
 
 ##Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
 
 ##This license requires that reusers give credit to the creator. It allows reusers to distribute, remix, adapt, and build upon the material in any medium or format, for noncommercial purposes only. If others modify or adapt the material, they must license the modified material under identical terms.
 
 import sys
-import re
+import torch
 
 def main():
     if sys.argv[1].find('.html') >= 0:
@@ -15,8 +17,8 @@ def main():
         make_audio()
 
 def format_html():
-
-              
+    import re
+    import sys
     try:
         f = open(sys.argv[1])
         text = f.read()
@@ -150,34 +152,28 @@ def format_html():
     
     
     s = open(sys.argv[2],'w')
-    #print(text[325892:326895])
     s.write(text)
     s.close()
     
     count_words(sys.argv[2])
     
 def make_audio():
+    ###
+    #ToDo:
+    #-Figure out how to make your own silence:  see numpy, numpy save_wav, tts_arranger->tts_processor->synthesize_tts_item
+    #-make it so it doesn't make 10 billion files all the time
+    #-make it so the chapters have the filename tacked on behind.
+    ###
+    
     ####
     #command line arguments x.py "C:/path/to/text.txt" 1(chapter to skip to)
-    import torch
+    
     from TTS.api import TTS
+    import re
     import os
+    import sys
     import subprocess
     import shutil
-    import sox
-    import numpy as np
-    
-    sample_rate = 24000
-    
-    tsf = sox.Transformer()
-    tsf.set_globals(verbosity=1)
-    
-    s100 = np.zeros(int(sample_rate * 100/1000))
-    s200 = np.zeros(int(sample_rate * 200/1000))
-    s500 = np.zeros(int(sample_rate * 500/1000))
-    s1000 = np.zeros(int(sample_rate * 1000/1000))
-    s1200 = np.zeros(int(sample_rate * 1200/1000))
-    s3000 = np.zeros(int(sample_rate * 3000/1000))
     
     #filename for later when we are making the chapters    
     fileName = os.path.basename(sys.argv[1])
@@ -332,7 +328,7 @@ def make_audio():
         sentences = {}
         clip = {}
         clip["text"]=""
-        #only above 0 for specific silences.
+        #only above 0 for specific silences.  I don't know how to generate silences, so this is the best i can do with the wav files.
         clip["sil"]=0
         clip["nar"]=True
         clip["slow"]=False
@@ -355,27 +351,42 @@ def make_audio():
             if text.startswith("<pitch absmiddle=\"5\">") or text.startswith("<pitch>"):
                 txtIndex = text.find(">")
                 text= text[txtIndex+1:]
+                txtIndex = text.index("<")
+                clip["text"]= text[0:txtIndex]
+                clip["sil"]=0
                 isNarration=False
-                continue
+                text = text[txtIndex:]
             #and when we hit a pitch close, turn narration on, and take a quick pause
             elif text.startswith("</pitch>"):
                 txtIndex = text.find(">")
                 text= text[txtIndex+1:]
+                txtIndex = text.find("<")
+                if txtIndex < 0:
+                    txtIndex = len(text)
+                clip["text"]= text[0:txtIndex]
                 isNarration=True
-                continue
-                                      
+                clip["sil"]=0
+                text = text[txtIndex:]
             #when we get to this rate clip, we know italics text has begun, and so we can now slow the text
             elif text.startswith("<rate absspeed=\"-3") or text.startswith("<rate>"):
                 txtIndex = text.find(">")
                 text= text[txtIndex+1:]
+                txtIndex = text.index("<")
+                clip["text"]= text[0:txtIndex]
+                clip["sil"]=0
                 isSlow=True
-                continue
+                text = text[txtIndex:]
             #and when we hit a rate close, turn speed to normal.
             elif text.startswith("</rate>") or text.startswith("<rate absspeed=\"0\"/>"):
                 txtIndex = text.find(">")
                 text= text[txtIndex+1:]
+                txtIndex = text.find("<")
+                if txtIndex < 0:
+                    txtIndex = len(text)
+                clip["text"]= text[0:txtIndex]
                 isSlow=False
-                continue
+                clip["sil"]=0
+                text = text[txtIndex:]
             #silences are special, so we only render the silence itself then move on to the next text pull
             elif text.startswith("<silence msec=\"100\""):
                 txtIndex = text.index(">")
@@ -410,12 +421,13 @@ def make_audio():
             #lastly, we go to either the next tag, or the end of the body of text
             #fyi, .index (vs .find) will throw an exception when no result is found, and find returns a -1
             else:
-                txtIndex = getNextIndex(text) 
+                txtIndex = text.find("<")
+                if txtIndex < 0:
+                    txtIndex = len(text)
                 clip["text"] = text[0:txtIndex]
                 #isNarration=True
-                clip["sil"]=0
+                clip["sil"]=0   
                 text = text[txtIndex:]
-                
             #this is where we set all the common state material we can
             if not clip["text"] == "":
                 #getting rid of problematic text at the beginnings of texts, which causes missed text synthesizing at the end
@@ -423,7 +435,6 @@ def make_audio():
                     clip["text"]= clip["text"][re.search(r'[^\s,]',clip["text"]).start():]
                 except:
                     clip["text"]= clip["text"]
-                
             clip["nar"]=isNarration
             clip["slow"]=isSlow
             sentences[i]=clip
@@ -431,10 +442,9 @@ def make_audio():
         
         print("Begin tts process.")
         #this is where the clip creation happens    
-        concat = np.zeros(int(sample_rate * 200/1000))
         for i in sentences:
             clip = sentences[i]
-            print("synth:=="+clip["text"]+"==")
+            print("synth:"+clip["text"])
             
             #this is how we are keeping track of all the things we might want to do to a clip.
             #originally this was an outside process, but it's handled internally now.
@@ -448,22 +458,29 @@ def make_audio():
             filepath = f"{i:05d}"+addons
             
             if clip["sil"]==3000:
-                concat = np.concatenate([concat,s3000])
+                shutil.copyfile("s3000.wav", filepath+".wav")
+                allFiles.append(filepath+".wav")
                 continue
             if clip["sil"]==1200:
-                concat = np.concatenate([concat,s1200])
+                shutil.copyfile("s1200.wav", filepath+".wav")
+                allFiles.append(filepath+".wav")
                 continue
             if clip["sil"]==1000:
-                concat = np.concatenate([concat,s1000])
+                shutil.copyfile("s1000.wav", filepath+".wav")
+                allFiles.append(filepath+".wav")
                 continue
             if clip["sil"]==500:
-                concat = np.concatenate([concat,s500])
+                shutil.copyfile("s500.wav", filepath+".wav")
+                allFiles.append(filepath+".wav")
                 continue
             if clip["sil"]==200:
-                concat = np.concatenate([concat,s200])
+                shutil.copyfile("s200.wav", filepath+".wav")
+                allFiles.append(filepath+".wav")
                 continue
             if clip["sil"]==100:
-                concat = np.concatenate([concat,s100])
+                continue
+                shutil.copyfile("s100.wav", filepath+".wav")
+                allFiles.append(filepath+".wav")
                 continue
             ##I don't think we need to do anything else but skip these texts now, but i'll leave the original code just in case.
             if len(re.findall("[a-zA-Z0-9]",clip["text"])) <= 0 or clip["text"] == "'" or clip["text"] == "\"":
@@ -481,64 +498,56 @@ def make_audio():
                 ifa = match.start()
                 if clip["text"].find(',') > -1 and clip["text"].find(',') < ifa:
                     clip["text"] = clip["text"][ifa:]
-                    
-            #get rid of trailing spaces
-            while clip["text"][-1] == ' ':
-                clip["text"] = clip["text"][:len(clip["text"])-1]
-                
-            ##End of sentence hallucinations
-            #Especially on short sentences, it tends to hallucinate.  You can curtail this by
-            # having an underscore at the end if there is no punctuation at the end
-            if clip["text"][-1].isalpha() and clip["text"][-1] != 'a' and clip["text"][-1] != 'A' and clip["text"][-1] != 'e' and clip["text"][-1] != 'i' and clip["text"][-1] != 'I' and clip["text"][-1] != 'o' and clip["text"][-1] != 'u' and clip["text"][-1] != 'y' and clip["text"][-1] != 'd' and clip["text"][-1] != 's':
-                clip["text"] = clip["text"] + "_"
-
+            
             #clip generation
             try:
-                wav = tts.tts(text=clip["text"], speaker_wav="p248.wav", language="en")
+                tts.tts_to_file(text=clip["text"], speaker_wav="p248.wav", file_path=filepath+".wav", language="en")
             except:
                 #sometimes it will cut up sentenbces badly.  We try again, but we take out anything potentially problematic.
                 clip["text"] = re.sub(r'[\'"]',r'',clip["text"])
-                wav = tts.tts(text=clip["text"], speaker_wav="p248.wav", language="en")
+                tts.tts_to_file(text=clip["text"], speaker_wav="p248.wav", file_path=filepath+".wav", language="en")
             #else:
                 #tts.tts_to_file(text=clip["text"], speaker="p227", file_path=f"{i:05d}"+".wav")
             #Here, we do pitch or rate changes to the file depending on what it needs.  the pitch changes work on a formula
             #so, to go up one notch, (x being the number of notches) the value is 2^(x/12)
-            tsf.clear_effects()
+            filters = ""
             if filepath.find("p") >= 0:
-                #filters = filters + "pitch 100"
-                tsf.pitch(1)
+                filters = filters + "pitch 100"
             else:
-                #filters = filters + "pitch -100"
-                tsf.pitch(-1)
+                filters = filters + "pitch -100"
             
             if filepath.find("r") >= 0:
-                #filters = filters + " " +"tempo 0.80"
-                tsf.tempo(0.80,'s')
+                filters = filters + " " +"tempo 0.80"
                 #filters = "rubberband=pitch=0.89089871814033930474022620559051"
             else:
-                #filters = filters + " " +"tempo .92"
-                tsf.tempo(0.92,'s')
+                filters = filters + " " +"tempo .92"
             
             #helps trim out weird long pauses around italics.        
-            #filters = filters + " silence -l 0 -1 0.1 1%"
-            tsf.silence(-1,0)
-            tsf.silence(-1,0.1,0.1)
+            filters = filters + " silence -l 0 -1 0.1 1%"
             
-            #I have to do this bit here otherwise it's not treated as a proper numpy array
-            wav = np.concatenate([wav])
-            wav = tsf.build_array(input_array=wav, sample_rate_in=sample_rate)
+            subprocess.call("sox " + filepath + ".wav" + " " + filepath+"x.wav" + " " + filters ,shell=False)
+            os.remove(filepath+".wav")
+            filepath = filepath+"x"
             
-            #add a bit of silence to the end of every text generation, and att it to the whole.
-            concat = np.concatenate([concat,wav,s200])
-
-        #tsf.clear_effects()
-        #tsf.equalizer(315, 1, -6)
-        #tsf.equalizer(640, 1, -3)
-        #tsf.equalizer(6100, 1, 1.5)
-        #concat = tsf.build_array(input_array=concat, sample_rate_in=sample_rate)
-        tsf.clear_effects()
-        outputname = fileName + f"{chapnum:03d}" + ".mp3"
-        tsf.build_file(input_array=concat,output_filepath=outputname,sample_rate_in=sample_rate)
+            allFiles.append(filepath+".wav")
+        
+        #this creates the list to use for ffmpeg to put them all together
+        f = open("mylist.txt", "w")
+        for i in allFiles:
+            print("file '"+i+"'",file=f)
+        f.close()
+        subprocess.call("ffmpeg -f concat -safe 0 -i mylist.txt -c copy output.wav",shell=False)
+        #get rid of superfluous files
+        for i in allFiles:
+            os.remove(i)
+            
+        subprocess.call("sox output.wav soxout.wav equalizer 315 1 -6 equalizer 640 1 -3 equalizer 6100 1 1.5",shell=False)
+        os.remove("output.wav")
+        subprocess.call("ffmpeg -i soxout.wav \"" + fileName + f"{chapnum:03d}" + ".mp3\"",shell=False)
+    
+        
+        #and remove the old wav!
+        os.remove("soxout.wav")
         
 def count_words(filetoread):
     import re
@@ -596,15 +605,8 @@ def count_words(filetoread):
     
     f.close()
 
-def getNextIndex(text):
-    txtIndex = text.find("<")
-    if txtIndex >= 240 and text.find(",") > 0 and text.find(",") < 240:
-        txtIndex = text.find(",")+1
-    if txtIndex < 0:
-        txtIndex = len(text)
-    return txtIndex
+    
     
 
 if __name__ == "__main__":
     main()
-
