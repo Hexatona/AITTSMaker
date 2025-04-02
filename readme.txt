@@ -1,5 +1,11 @@
 By using this software you agree to the terms in license.txt.
 
+New Version, AITTSMaker V2.  Newfeatures include:
+
++ Now it doesn't create thousands of files, and works entirely in memory.  Also no longer uses FFMPEG.
++ Slightly better at eliminating end-of-sentence hallucinations
++ Prevents too-long text generations, and breaks them up.  (They hallucinate if it gets too long)
+
 How to use
 
 1)  Install miniconda, and run it
@@ -24,7 +30,11 @@ pip install spylls
 
 pip install chardet
 
-5) Put FFMPEG and SOX in the directory.
+pip install sox
+
+5) Grab SoX from https://sourceforge.net/projects/sox/files/sox/ and put the exes and dll's in the AITTSMaker directory.
+
+Also, find libmp3lame.dll and put it in (I'm sorry, I'd include these files in the release but I have no idea how the legality of sharing those works!  Forgive me!)
 
 6)  App Usage:  (make sure you open up miniconda, activate the coquitts environnt, and naviate to the directory of this program.)
 
@@ -36,7 +46,7 @@ this will get you the text file plus a set of words it doesn't know.  listen to 
 
 b)  python AITTSMaker.py "C:\AITTSMaker\Examples\The Wonderful Wizard of Oz.txt"
 
-this will start the audiobook process, making tons and tons of small files, rolling them up, and moving on to the next chapter
+this will start the audiobook process.  You'll know it's working when you see clips of text showing up on screen.
 
 TIPS N TRICKS
 
@@ -54,4 +64,4 @@ OH NO IT DID A BAD
 
 1)  Unrecognised characters - sometimes it freaks out with accented characters.  replace them with regular characters.
 2)  Why is my whole chapter sounding  incredibly slow?  Short answer, because the first generated audio bit was silence.  Probably a few carriage returns or something before the actual text starts.  Make sure text is litrerally the first part of the file.
-3)  It sometimes freaks out at the end of a sentence!?  Yeah, not sure why it does that.  Work in progress.  (You should have seen what happened when a sentence began with a comma, and there was a 2nd comma later - was absolutely wild)
+3)  It sometimes freaks out at the end of a sentence!?  I fixed most of these, but on single words sometimes it goes a little batty.  Work in progress!
