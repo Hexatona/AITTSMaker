@@ -2,7 +2,7 @@ The Wonderful Wizard of Oz by L. Frank Baum
 
 This book is dedicated to my good friend & comrade
 
-Chapter I
+Chapter 1
 
  The Cyclone 
 
@@ -46,7 +46,9 @@ Chapter I
 
  In spite of the swaying of the house and the wailing of the wind, Dorothy soon closed her eyes and fell fast asleep. 
 
-  Chapter II
+  End of Chapter.
+
+CHAPTER END Chapter 2
 
  The Council with the Munchkins 
 
@@ -166,7 +168,9 @@ Chapter I
 
  But Dorothy, knowing her to be a witch, had expected her to disappear in just that way, and was not surprised in the least. 
 
-  Chapter III
+  End of Chapter.
+
+CHAPTER END Chapter 3
 
  How Dorothy Saved the Scarecrow 
 
@@ -282,7 +286,9 @@ Chapter I
 
  <pitch>“No,”</pitch> answered the Scarecrow; <pitch>“it’s a lighted match.”</pitch> 
 
-  Chapter IV
+  End of Chapter.
+
+CHAPTER END Chapter 4
 
  The Road Through the Forest 
 
@@ -360,7 +366,9 @@ Chapter I
 
  So the Scarecrow led her through the trees until they reached the cottage, and Dorothy entered and found a bed of dried leaves in one corner. She lay down at once, and with Toto beside her soon fell into a sound sleep. The Scarecrow, who was never tired, stood up in another corner and waited patiently until morning came. 
 
-  Chapter V
+  End of Chapter.
+
+CHAPTER END Chapter 5
 
  The Rescue of the Tin Woodman 
 
@@ -468,7 +476,9 @@ Chapter I
 
  What worried her most was that the bread was nearly gone, and another meal for herself and Toto would empty the basket. To be sure, neither the Woodman nor the Scarecrow ever ate anything, but she was not made of tin nor straw, and could not live unless she was fed. 
 
-  Chapter VI
+  End of Chapter.
+
+CHAPTER END Chapter 6
 
  The Cowardly Lion 
 
@@ -566,7 +576,9 @@ Chapter I
 
  <pitch>“You people with hearts,”</pitch> he said, <pitch>“have something to guide you, and need never do wrong; but I have no heart, and so I must be very careful. When Oz gives me a heart of course I needn’t mind so much.”</pitch> 
 
-  Chapter VII
+  End of Chapter.
+
+CHAPTER END Chapter 7
 
  The Journey to the Great Oz 
 
@@ -652,7 +664,9 @@ Chapter I
 
  But it takes time to make a raft, even when one is as industrious and untiring as the Tin Woodman, and when night came the work was not done. So they found a cozy place under the trees where they slept well until the morning; and Dorothy dreamed of the Emerald City, and of the good Wizard Oz, who would soon send her back to her own home again. 
 
-  Chapter VIII
+  End of Chapter.
+
+CHAPTER END Chapter 8
 
  The Deadly Poppy Field 
 
@@ -768,7 +782,9 @@ Chapter I
 
  They carried the sleeping girl to a pretty spot beside the river, far enough from the poppy field to prevent her breathing any more of the poison of the flowers, and here they laid her gently on the soft grass and waited for the fresh breeze to waken her. 
 
-  Chapter IX
+  End of Chapter.
+
+CHAPTER END Chapter 9
 
  The Queen of the Field Mice 
 
@@ -854,7 +870,9 @@ Chapter I
 
  After this they sat down beside the Lion until he should awaken; and the Scarecrow brought Dorothy some fruit from a tree near by, which she ate for her dinner. 
 
-  Chapter X
+  End of Chapter.
+
+CHAPTER END Chapter 10
 
  The Guardian of the Gate 
 
@@ -972,7 +990,9 @@ Chapter I
 
  Then the Guardian of the Gates put on his own glasses and told them he was ready to show them to the Palace. Taking a big golden key from a peg on the wall, he opened another gate, and they all followed him through the portal into the streets of the Emerald City. 
 
-  Chapter XI
+  End of Chapter.
+
+CHAPTER END Chapter 11
 
  The Wonderful City of Oz 
 
@@ -1178,7 +1198,9 @@ Chapter I
 
  They went to bed quite early and slept soundly until daylight, when they were awakened by the crowing of a green cock that lived in the back yard of the Palace, and the cackling of a hen that had laid a green egg. 
 
-  Chapter XII
+  End of Chapter.
+
+CHAPTER END Chapter 12
 
  The Search for the Wicked Witch 
 
@@ -1348,7 +1370,9 @@ Chapter I
 
  With these words the Witch fell down in a brown, melted, shapeless mass and began to spread over the clean boards of the kitchen floor. Seeing that she had really melted away to nothing, Dorothy drew another bucket of water and threw it over the mess. She then swept it all out the door. After picking out the silver shoe, which was all that was left of the old woman, she cleaned and dried it with a cloth, and put it on her foot again. Then, being at last free to do as she chose, she ran out to the courtyard to tell the Lion that the Wicked Witch of the West had come to an end, and that they were no longer prisoners in a strange land. 
 
-  Chapter XIII
+  End of Chapter.
+
+CHAPTER END Chapter 13
 
  The Rescue 
 
@@ -1410,7 +1434,9 @@ Chapter I
 
  Then, being prepared for the journey, they all started for the Emerald City; and the Winkies gave them three cheers and many good wishes to carry with them. 
 
-  Chapter XIV
+  End of Chapter.
+
+CHAPTER END Chapter 14
 
  The Winged Monkeys 
 
@@ -1500,7 +1526,9 @@ Chapter I
 
  <pitch>“Yes, and a quick way out of our troubles,”</pitch> replied the Lion. <pitch>“How lucky it was you brought away that wonderful Cap!”</pitch> 
 
-  Chapter XV
+  End of Chapter.
+
+CHAPTER END Chapter 15
 
  The Discovery of Oz, the Terrible 
 
@@ -1688,7 +1716,9 @@ Chapter I
 
  They agreed to say nothing of what they had learned, and went back to their rooms in high spirits. Even Dorothy had hope that <pitch>“The Great and Terrible Humbug,”</pitch> as she called him, would find a way to send her back to Kansas, and if he did she was willing to forgive him everything. 
 
-  Chapter XVI
+  End of Chapter.
+
+CHAPTER END Chapter 16
 
  The Magic Art of the Great Humbug 
 
@@ -1774,7 +1804,9 @@ Chapter I
 
  Oz, left to himself, smiled to think of his success in giving the Scarecrow and the Tin Woodman and the Lion exactly what they thought they wanted. <pitch>“How can I help being a humbug,”</pitch> he said, <pitch>“when all these people make me do things that everybody knows can’t be done? It was easy to make the Scarecrow and the Lion and the Woodman happy, because they imagined I could do anything. But it will take more than imagination to carry Dorothy back to Kansas, and I’m sure I don’t know how it can be done.”</pitch> 
 
-  Chapter XVII
+  End of Chapter.
+
+CHAPTER END Chapter 17
 
  How the Balloon Was Launched 
 
@@ -1844,7 +1876,9 @@ Chapter I
 
  Still, for many days they grieved over the loss of the Wonderful Wizard, and would not be comforted. 
 
-  Chapter XVIII
+  End of Chapter.
+
+CHAPTER END Chapter 18
 
  Away to the South 
 
@@ -1942,7 +1976,9 @@ Chapter I
 
  <pitch>“We shall go tomorrow morning,”</pitch> returned the Scarecrow. <pitch>“So now let us all get ready, for it will be a long journey.”</pitch> 
 
-  Chapter XIX
+  End of Chapter.
+
+CHAPTER END Chapter 19
 
  Attacked by the Fighting Trees 
 
@@ -2000,7 +2036,9 @@ Chapter I
 
  <pitch>“I will make a ladder,”</pitch> said the Tin Woodman, <pitch>“for we certainly must climb over the wall.”</pitch> 
 
-  Chapter XX
+  End of Chapter.
+
+CHAPTER END Chapter 20
 
  The Dainty China Country 
 
@@ -2104,7 +2142,9 @@ Chapter I
 
  <pitch>“They are, indeed,”</pitch> said the Scarecrow, <pitch>“and I am thankful I am made of straw and cannot be easily damaged. There are worse things in the world than being a Scarecrow.”</pitch> 
 
-  Chapter XXI
+  End of Chapter.
+
+CHAPTER END Chapter 21
 
  The Lion Becomes the King of Beasts 
 
@@ -2158,7 +2198,9 @@ Chapter I
 
  Then the beasts bowed down to the Lion as their King, and he promised to come back and rule over them as soon as Dorothy was safely on her way to Kansas. 
 
-  Chapter XXII
+  End of Chapter.
+
+CHAPTER END Chapter 22
 
  The Country of the Quadlings 
 
@@ -2220,7 +2262,9 @@ Chapter I
 
  <pitch>“Let me have your name, and I will ask Glinda if she will receive you.”</pitch> They told who they were, and the girl soldier went into the Castle. After a few moments she came back to say that Dorothy and the others were to be admitted at once. 
 
-  Chapter XXIII
+  End of Chapter.
+
+CHAPTER END Chapter 23
 
  Glinda The Good Witch Grants Dorothy’s Wish 
 
@@ -2306,7 +2350,9 @@ Chapter I
 
  Dorothy stood up and found she was in her stocking-feet. For the Silver Shoes had fallen off in her flight through the air, and were lost forever in the desert. 
 
-  Chapter XXIV
+  End of Chapter.
+
+CHAPTER END Chapter 24
 
  Home Again 
 
