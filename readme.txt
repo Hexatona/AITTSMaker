@@ -10,7 +10,7 @@ How to use
 
 1)  Install miniconda, and run it
 
-2) create conda env to use, and run it
+2) create conda env to use, and run it  [IMPORTANT NOTE:  If 3.9 no longer works, try 3.10, and if that doesn't, try 3.11.  Might be system dependent?]
 
 conda create --name coquitts python=3.9
 
@@ -21,6 +21,8 @@ conda activate coquitts
 Download the latest source code from here:  https://github.com/coqui-ai/TTS
 
 go into the directory:  pip install .
+
+IMPORTANT NOTE:  That library is no longer updated.  Use this fork instead:  https://github.com/idiap/coqui-ai-TTS
 
 4) install the right pytorch from here:  https://pytorch.org/get-started/locally/
 
