@@ -10,21 +10,18 @@ How to use
 
 1)  Install miniconda, and run it
 
-2) create conda env to use, and run it  [IMPORTANT NOTE:  If 3.9 no longer works, try 3.10, and if that doesn't, try 3.11.  Might be system dependent?]
+2) create conda env to use, and run it
 
-conda create --name coquitts python=3.9
+conda create --name coquitts python=3.11
 
 conda activate coquitts
 
-3) install the coquitts library
+3) install the coquitts library [fyi, it's using this fork:  https://github.com/idiap/coqui-ai-TTS]
 
-Download the latest source code from here:  https://github.com/coqui-ai/TTS
-
-go into the directory:  pip install .
-
-IMPORTANT NOTE:  That library is no longer updated.  Use this fork instead:  https://github.com/idiap/coqui-ai-TTS
+pip install coqui-tts
 
 4) install the right pytorch from here:  https://pytorch.org/get-started/locally/
+[NOTE:  If you don't have a GPU, you don't need this.  This is only if you wanna run TTS with CUDA]
 
 5)  install the other libraries:
 
@@ -36,7 +33,7 @@ pip install sox
 
 5) Grab SoX from https://sourceforge.net/projects/sox/files/sox/ and put the exes and dll's in the AITTSMaker directory.
 
-Also, find libmp3lame.dll and put it in (I'm sorry, I'd include these files in the release but I have no idea how the legality of sharing those works!  Forgive me!)
+Also, find libmp3lame.dll and put it in (Probably from https://www.rarewares.org/index.php.  Not 100% sure if you need the 32 bit or 64.)
 
 6)  App Usage:  (make sure you open up miniconda, activate the coquitts environnt, and naviate to the directory of this program.)
 
