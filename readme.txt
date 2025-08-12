@@ -8,6 +8,8 @@ New Version, AITTSMaker V2.  Newfeatures include:
 
 How to use
 
+0)  Download this codebase.  For the purposes of instruction, I've imagined you would put it somewhere like "C:\AITTSMaker\"
+
 1)  Install miniconda, and run it
 
 2) create conda env to use, and run it
