@@ -8,6 +8,9 @@
 import sys
 import re
 
+import unicodedata
+from charset_normalizer import from_bytes
+
 def main():
     if sys.argv[1].find('.html') >= 0:
         format_html()
@@ -17,17 +20,18 @@ def main():
 def format_html():
 
               
-    try:
-        f = open(sys.argv[1])
-        text = f.read()
-    except:
-        try:
-            f = open(sys.argv[1],encoding='utf-8')
-            text = f.read()
-        except:
-            f = open(sys.argv[1],encoding='ansi')
-            text = f.read()
-            
+    
+    with open(sys.argv[1], "rb") as f:
+        raw = f.read()
+
+    result = from_bytes(raw).best()
+    if result is None:
+        # Fallback if detection failed
+        text = raw.decode("utf-8", errors="replace")
+    else:
+        text = str(result)  # already decoded using detected encoding
+
+    text = strip_accents_and_compat(text)
     f.close()
     
     m = re.search(r'<body[\s\S]*</body>',text)
@@ -42,6 +46,7 @@ def format_html():
     text = re.sub(r'(</i>|</em>|</I>|</EM>)',r'@VCXZ#',text)
     text = re.sub(r'(<p>|</p>|<div>|</div>|<br>|<br/>|<P>|</P>|<DIV>|</DIV>|<BR>|<BR/>|<p[^>]*>|<P[^>]*>)',r'\n\n',text)#get the spacing
     text = re.sub(r'<HR[^>]*>|<hr[^>]*>',r'***',text)#spans for section pauses
+    text = re.sub(r'<h2 class="heading">',r'<h2 class="heading">CHAPTER END ',text)#spans for section pauses
     text = re.sub(r'<[^>]*>',r'',text)#get rid of all other tags
     
     text = text.replace('&quot;','"')
@@ -149,10 +154,9 @@ def format_html():
             text = text[1:]
     
     
-    s = open(sys.argv[2],'w')
-    #print(text[325892:326895])
-    s.write(text)
-    s.close()
+    with open(sys.argv[2], "w", encoding="utf-8") as s:
+        s.write(text)
+        s.close()
     
     count_words(sys.argv[2])
     
@@ -160,6 +164,7 @@ def make_audio():
     ####
     #command line arguments x.py "C:/path/to/text.txt" 1(chapter to skip to)
     import torch
+    import random
     from TTS.api import TTS
     import os
     import subprocess
@@ -170,7 +175,6 @@ def make_audio():
     sample_rate = 24000
     
     tsf = sox.Transformer()
-    tsf.set_globals(verbosity=1)
     
     s100 = np.zeros(int(sample_rate * 100/1000))
     s200 = np.zeros(int(sample_rate * 200/1000))
@@ -184,7 +188,7 @@ def make_audio():
     fileName = fileName[0:len(fileName)-4]
     fileName = fileName + " - "
     
-    spk = "p284" #p273 #248 #280 #284
+    spk = "p248.wav" #"Tanja Adelina"#"Uta Obando"#"Dionisio Schuyler" #p273 #248 #280 #284
     
     if torch.cuda.is_available():
         device = "cuda" 
@@ -493,11 +497,11 @@ def make_audio():
 
             #clip generation
             try:
-                wav = tts.tts(text=clip["text"], speaker_wav="p248.wav", language="en")
+                wav = tts.tts(text=clip["text"], speaker_wav=spk, language="en")
             except:
                 #sometimes it will cut up sentenbces badly.  We try again, but we take out anything potentially problematic.
                 clip["text"] = re.sub(r'[\'"]',r'',clip["text"])
-                wav = tts.tts(text=clip["text"], speaker_wav="p248.wav", language="en")
+                wav = tts.tts(text=clip["text"], speaker_wav=spk, language="en")
             #else:
                 #tts.tts_to_file(text=clip["text"], speaker="p227", file_path=f"{i:05d}"+".wav")
             #Here, we do pitch or rate changes to the file depending on what it needs.  the pitch changes work on a formula
@@ -505,7 +509,7 @@ def make_audio():
             tsf.clear_effects()
             if filepath.find("p") >= 0:
                 #filters = filters + "pitch 100"
-                tsf.pitch(1)
+                tsf.pitch(.5)
             else:
                 #filters = filters + "pitch -100"
                 tsf.pitch(-1)
@@ -514,9 +518,9 @@ def make_audio():
                 #filters = filters + " " +"tempo 0.80"
                 tsf.tempo(0.80,'s')
                 #filters = "rubberband=pitch=0.89089871814033930474022620559051"
-            else:
+            #else:
                 #filters = filters + " " +"tempo .92"
-                tsf.tempo(0.92,'s')
+                #tsf.tempo(0.92,'s')
             
             #helps trim out weird long pauses around italics.        
             #filters = filters + " silence -l 0 -1 0.1 1%"
@@ -544,8 +548,19 @@ def count_words(filetoread):
     from spylls.hunspell import Dictionary
     dictionaryUS = Dictionary.from_files('dict/en_US')
     dictionaryCA = Dictionary.from_files('dict/en_CA')
-    f = open(filetoread)
-    text = f.read()
+
+
+    with open(filetoread, "rb") as f:
+        raw = f.read()
+
+    result = from_bytes(raw).best()
+    if result is None:
+        # Fallback if detection failed
+        text = raw.decode("utf-8", errors="replace")
+    else:
+        text = str(result)  # already decoded using detected encoding
+
+    text = strip_accents_and_compat(text)
     f.close()
     words = re.findall(r'\w+\'?\w+', text.lower())
     f = open("ignore.txt")
@@ -602,6 +617,42 @@ def getNextIndex(text):
     if txtIndex < 0:
         txtIndex = len(text)
     return txtIndex
+
+def strip_accents_and_compat(s: str, *, casefold: bool = False) -> str:
+    # """
+    # Remove diacritics (accents) and apply Unicode compatibility mappings.
+
+    # - Uses NFKD to perform compatibility decomposition (e.g., ﬁ → f + i, ¹ → 1).
+    # - Strips *all* combining marks (categories 'Mn', 'Mc', 'Me'), which removes accents.
+    # - Re-normalizes with NFKC to get a clean, composed representation.
+    # - Optional `casefold=True` for robust case-insensitive matching (better than .lower()).
+
+    # Examples:
+    #     "pequeño"         -> "pequeno"
+    #     "ﬁancé"           -> "fiance"        (ligature resolved, accent removed)
+    #     "Café™ ① 𝟠 Ⓐ"     -> "Cafe (TM) 1 8 A"
+    #     "Straße"          -> "Strasse"       (with casefold=True)
+    # """
+    if s is None:
+        return ""
+
+    # 1) Compatibility decomposition (splits diacritics, ligatures, circled/superscripts, etc.)
+    s = unicodedata.normalize("NFKD", s)
+
+    # 2) Remove all combining marks: Nonspacing (Mn), Spacing (Mc), Enclosing (Me)
+    #    This fully strips accents/diacritics and enclosing marks.
+    s = "".join(ch for ch in s if not unicodedata.category(ch).startswith("M"))
+
+    # 3) Optional: strong, locale-agnostic case-insensitive normalization
+    if casefold:
+        s = s.casefold()   # handles ß → ss, dotted/dotless i, etc.
+
+    # 4) Recompose to canonical, compact form
+    s = unicodedata.normalize("NFKC", s)
+
+    return s
+
+
     
 
 if __name__ == "__main__":
