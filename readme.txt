@@ -47,7 +47,7 @@ this will get you the text file plus a set of words it doesn't know.  listen to 
 
 b)  python AITTSMaker.py "C:\AITTSMaker\Examples\The Wonderful Wizard of Oz.txt"
 
-this will start the audiobook process.  You'll know it's working when you see clips of text showing up on screen.
+this will start the audiobook process.  You'll know it's working when you see clips of text showing up on screen.  Note: this can take a bit of time, as it loads the model, so be patient.
 
 TIPS N TRICKS
 
@@ -58,11 +58,12 @@ TIPS N TRICKS
 5)  What if I want to skip ahead to a specific chapter?  
  python AITTSMaker.py "C:\AITTSMaker\Examples\The Wonderful Wizard of Oz.txt" 7 <- starts at chapter 7.
 6)  Other voices:  I included (in best) a selection of voices with it I think perform very well.  But any 6 seconds or so of a clean wav file will do.  It will clone the voice.
+(Note: to be very clear, the file "p248.wav" is hard coded as the voice it's using.  You can either rename whatever file you want to use to be p248.wav, or just edit it in the python code.  Next update will make this process of using other voices a little easier, as well as including a way to use the internal speakers of the XTTS Model, with some recommendations by me.)
 
 My best advice to you is that you take the first chapter, slap it into a different text file, and generate that first.  Listen to it, see what it sounds like, and then tweak the document or word replacements before you just try for the whole thing.  It will save you a lot of headache.
 
 OH NO IT DID A BAD
 
-1)  Unrecognised characters - sometimes it freaks out with accented characters.  replace them with regular characters.
+1)  Unrecognised characters - sometimes it freaks out with accented characters.  replace them with regular characters.  Note:  In the latest version of the html->text process, it tries REALLY HARD to automatically remove these.  This should make the app a LOT easier to use.
 2)  Why is my whole chapter sounding  incredibly slow?  Short answer, because the first generated audio bit was silence.  Probably a few carriage returns or something before the actual text starts.  Make sure text is litrerally the first part of the file.
 3)  It sometimes freaks out at the end of a sentence!?  I fixed most of these, but on single words sometimes it goes a little batty.  Work in progress!
