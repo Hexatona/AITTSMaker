@@ -1,0 +1,79 @@
+# AITTSMaker
+
+AITTSMaker is a Python-based tool for turning documents into **audiobooks** using **Coqui TTS / XTTS‑v2**, with an emphasis on **dialogue‑aware prosody** and **emphasis-awareness** through deterministic pitch control and rate control using **SoX**.
+
+By using this software you agree to the terms in 'license.txt'.
+
+Features:
+ - Transforms html documents into a tagged text file ready to edit and output to speech.
+ - Handles tags: pitch, rate, and silence.
+ - Handles breaking up audio by chapter.
+ - Automatically formats most documents with dialogue and emphasis with pitch and rate adjustments.
+ - offers word replacements.
+ - voice cloning
+ - outputs mp3 files
+
+New Version, AITTSMaker V2.  Newfeatures include:
+
+ - Now it doesn't create thousands of files, and works entirely in memory.  Also no longer uses FFMPEG.
+ - Slightly better at eliminating end-of-sentence hallucinations
+ - Prevents too-long text generations, and breaks them up.  (They hallucinate if it gets too long)
+
+## How to use
+
+1.  Download this codebase.  For the purposes of instruction, I've imagined you would put it somewhere like "C:\AITTSMaker\"
+
+2.  Install miniconda, and run it
+
+3.  Create conda env to use, and run it
+
+> conda create --name coquitts python=3.11  
+> conda activate coquitts
+
+4. Install the coquitts library [fyi, it's using this fork:  https://github.com/idiap/coqui-ai-TTS]
+
+> pip install coqui-tts
+
+5. Install the right pytorch from here:  https://pytorch.org/get-started/locally/
+[NOTE:  If you don't have a GPU, you don't need this.  This is only if you wanna run TTS with CUDA]
+
+6. Install the other libraries:
+
+> pip install spylls  
+> pip install chardet  
+> pip install sox
+
+7.  Grab SoX from https://sourceforge.net/projects/sox/files/sox/ and put the exes and dll's in the AITTSMaker directory.
+
+Also, find libmp3lame.dll and put it in (Probably from https://www.rarewares.org/index.php.  Not 100% sure if you need the 32 bit or 64.)
+
+8.  App Usage:  (make sure you open up miniconda, activate the coquitts environnt, and naviate to the directory of this program.)
+
+Format a story from html to text:
+
+> python AITTSMaker.py "C:\AITTSMaker\Examples\The Wonderful Wizard of Oz.html" "C:\AITTSMaker\Examples\The Wonderful Wizard of Oz.txt"
+
+This will get you the text file plus a set of words it doesn't know.  listen to them and see what needs fixing.  try out replacements, and put the replacements in replacements.txt
+
+> python AITTSMaker.py "C:\AITTSMaker\Examples\The Wonderful Wizard of Oz.txt"
+
+This will start the audiobook process.  You'll know it's working when you see clips of text showing up on screen.  Note: this can take a bit of time, as it loads the model, so be patient.
+
+## TIPS N TRICKS
+
+1.  Chapters end at: CHAPTER END        <-have the next chapter start literally right after that, or it can die.
+2.  Delete angled quotes before generation, the engine can sometimes kinda suck with them.  Also, - dashes not between words it gets sucky with too.
+3.  The tags it cares about are <rate>, </rate> <pitch>, </pitch>, <silence msec="1000"/>, and <silence msec="3000"/>
+4.  How do I get this epub into html?  There's services that do that online, but you can also use calibre.  Personally I recommend pandoc (another command line tool), it's great.
+5.  What if I want to skip ahead to a specific chapter?  
+ python AITTSMaker.py "C:\AITTSMaker\Examples\The Wonderful Wizard of Oz.txt" 7 <- starts at chapter 7.
+6.  Other voices:  I included (in best) a selection of voices with it I think perform very well.  But any 6 seconds or so of a clean wav file will do.  It will clone the voice.
+(Note: to be very clear, the file "p248.wav" is hard coded as the voice it's using.  You can either rename whatever file you want to use to be p248.wav, or just edit it in the python code.  Next update will make this process of using other voices a little easier, as well as including a way to use the internal speakers of the XTTS Model, with some recommendations by me.)
+
+My best advice to you is that you take the first chapter, slap it into a different text file, and generate that first.  Listen to it, see what it sounds like, and then tweak the document or word replacements before you just try for the whole thing.  It will save you a lot of headache.
+
+## OH NO IT DID A BAD
+
+1.  Unrecognised characters - sometimes it freaks out with accented characters.  replace them with regular characters.  Note:  In the latest version of the html->text process, it tries REALLY HARD to automatically remove these.  This should make the app a LOT easier to use.
+2.  Why is my whole chapter sounding  incredibly slow?  Short answer, because the first generated audio bit was silence.  Probably a few carriage returns or something before the actual text starts.  Make sure text is litrerally the first part of the file.
+3.  It sometimes freaks out at the end of a sentence!?  I fixed most of these, but on single words sometimes it goes a little batty.  Work in progress!
