@@ -18,6 +18,7 @@ New Version, AITTSMaker V2.  Newfeatures include:
  - Now it doesn't create thousands of files, and works entirely in memory.  Also no longer uses FFMPEG.
  - Slightly better at eliminating end-of-sentence hallucinations
  - Prevents too-long text generations, and breaks them up.  (They hallucinate if it gets too long)
+ - Text is now normalized, making it way WAY less likely to die when converting from html to text.
 
 ## How to use
 
@@ -63,7 +64,7 @@ This will start the audiobook process.  You'll know it's working when you see cl
 
 1.  Chapters end at: CHAPTER END        <-have the next chapter start literally right after that, or it can die.
 2.  Delete angled quotes before generation, the engine can sometimes kinda suck with them.  Also, - dashes not between words it gets sucky with too.
-3.  The tags it cares about are <rate>, </rate> <pitch>, </pitch>, <silence msec="1000"/>, and <silence msec="3000"/>
+3.  The tags it cares about are \<rate\>, \</rate\> \<pitch\>, \</pitch\>, \<silence msec="1000"/\>, and \<silence msec="3000"/\>
 4.  How do I get this epub into html?  There's services that do that online, but you can also use calibre.  Personally I recommend pandoc (another command line tool), it's great.
 5.  What if I want to skip ahead to a specific chapter?  
  python AITTSMaker.py "C:\AITTSMaker\Examples\The Wonderful Wizard of Oz.txt" 7 <- starts at chapter 7.
