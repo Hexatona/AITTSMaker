@@ -2,6 +2,15 @@ By using this software you agree to the terms in license.txt.
 
 AITTSMaker is an open‑source audiobook production pipeline that focuses on dialogue‑aware prosody using XTTS_v2 and signal‑level pitch control rather than relying solely on model‑side emotion inference.
 
+Features:
+ - Transforms html documents into a tagged text file ready to edit and output to speech.
+ - Handles tags: pitch, rate, and silence.
+ - Handles breaking up audio by chapter.
+ - Automatically formats most documents with dialogue and emphasis with pitch and rate adjustments.
+ - offers word replacements.
+ - voice cloning
+ - outputs mp3 files
+
 New Version, AITTSMaker V2.  Newfeatures include:
 
 + Now it doesn't create thousands of files, and works entirely in memory.  Also no longer uses FFMPEG.
