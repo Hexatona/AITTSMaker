@@ -1,5 +1,7 @@
 By using this software you agree to the terms in license.txt.
 
+AITTSMaker is an open‑source audiobook production pipeline that focuses on dialogue‑aware prosody using XTTS_v2 and signal‑level pitch control rather than relying solely on model‑side emotion inference.
+
 New Version, AITTSMaker V2.  Newfeatures include:
 
 + Now it doesn't create thousands of files, and works entirely in memory.  Also no longer uses FFMPEG.
